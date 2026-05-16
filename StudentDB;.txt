@@ -1,0 +1,61 @@
+CREATE DATABASE StudentDB;
+
+USE StudentDB;
+
+CREATE TABLE Students (
+    student_id INT PRIMARY KEY,
+    name VARCHAR(50),
+    department VARCHAR(50),
+    year INT
+);
+
+CREATE TABLE Courses (
+    course_id INT PRIMARY KEY,
+    course_name VARCHAR(50),
+    faculty VARCHAR(50)
+);
+
+CREATE TABLE Marks (
+    mark_id INT PRIMARY KEY,
+    student_id INT,
+    course_id INT,
+    marks INT,
+    FOREIGN KEY (student_id) REFERENCES Students(student_id),
+    FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+);
+
+INSERT INTO Students VALUES
+(101, 'Charvita', 'CSE', 3),
+(102, 'Rahul', 'IT', 2),
+(103, 'Priya', 'ECE', 1);
+
+INSERT INTO Courses VALUES
+(1, 'DBMS', 'Anand'),
+(2, 'Java', 'Kumar'),
+(3, 'Python', 'Meena');
+
+INSERT INTO Marks VALUES
+(1, 101, 1, 95),
+(2, 101, 2, 90),
+(3, 102, 1, 85),
+(4, 103, 3, 88);
+
+SELECT * FROM Students;
+
+SELECT * FROM Courses;
+
+SELECT * FROM Marks;
+
+SELECT Students.name, Courses.course_name, Marks.marks
+FROM Marks
+JOIN Students ON Marks.student_id = Students.student_id
+JOIN Courses ON Marks.course_id = Courses.course_id;
+
+SELECT name, department
+FROM Students
+WHERE department = 'CSE';
+
+SELECT Students.name, AVG(Marks.marks) AS AverageMarks
+FROM Marks
+JOIN Students ON Marks.student_id = Students.student_id
+GROUP BY Students.name;
